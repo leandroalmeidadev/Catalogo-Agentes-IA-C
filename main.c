@@ -6,9 +6,10 @@
 #define TAM_SCRIPT 1000
 #define VALOR_NOTA 5
 
-int cadastrarAgente(int id[], char noome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int i);
+int cadastrarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int i);
 int salvarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int a);
 void listarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int a);
+int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 
 void exibirMenu();
 
@@ -119,8 +120,10 @@ int cadastrarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], in
 
 int salvarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int a){
     FILE *arquivo = fopen("AgentesCadastrados.txt", "a");
-    if (arquivo == NULL)return 0;
-
+    if (arquivo == NULL){
+        printf("Arquivo de salvaAgentes não foi possivel ser aberto");
+        return 0;
+    }
     for (int i = 0; i < a; i++){
         fprintf(arquivo, "%d | %s | %s | %d\n", id[i], nome[i], scpt[i], nota[i]);
     }
@@ -133,5 +136,13 @@ void listarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int
         printf("\n============================================================================================\n");
         printf("Id: %d\nNome: %s\nScript: %s\nNota: %d\n", id[i], nome[i], scpt[i], nota[i]);
         // printf("\n============================================================================================\n");
+    }
+}
+
+int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents){
+    FILE *arquivo = fopen("AgentesCadastrados.txt", "r");
+    if (arquivo == NULL){
+        printf("Arquivo de carregarAgentes não foi possivel ser aberto");
+        return 0;
     }
 }
