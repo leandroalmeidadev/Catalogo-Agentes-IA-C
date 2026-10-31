@@ -126,7 +126,10 @@ int salvarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int 
         return 0;
     }
     for (int i = 0; i < a; i++){
-        fprintf(arquivo, "%d | %s | %s | %d\n", id[i], nome[i], scpt[i], nota[i]);
+        fprintf(arquivo, "%d\n", id[i]);
+        fprintf(arquivo, "%s\n", nome[i]);
+        fprintf(arquivo, "%s\n", scpt[i]);
+        fprintf(arquivo, "%d\n", nota[i]);
     }
     fclose(arquivo);
     return 1;
@@ -156,7 +159,7 @@ int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], in
         if (fgets(scpt[ard], TAM_SCRIPT, arquivo) == NULL)break;
         scpt[ard][strcspn(scpt[ard], "\n")] = '\0';
 
-        if (fcanf(arquivo, "%d", &nota[ard]) != 1)break;
+        if (fscanf(arquivo, "%d", &nota[ard]) != 1)break;
         ard++;
     }
 }
