@@ -1,0 +1,5 @@
+1 | s | 1 | 1
+1 | Julius | Agente de IA focado em renda familiar e emprego (dois empregos) | 5
+2 | JJ | Lean | 1
+2 | JJ | Lean | 1
+1 | LBM | SSS | 3
