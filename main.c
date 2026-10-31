@@ -21,6 +21,8 @@ int main(){
     char scripts[MAX_AGENT][TAM_SCRIPT];
     int acd = 0, opcao;
 
+    //acd = Agentes Cadastrados
+    acd = carregarAgentes(ids, nomes, scripts, notas, MAX_AGENT);
 
     do{
         exibirMenu();
@@ -144,5 +146,18 @@ int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], in
     if (arquivo == NULL){
         printf("Arquivo de carregarAgentes não foi possivel ser aberto");
         return 0;
+    }
+    //ard = Agentes Recuperados do Arquivo
+    int ard = 0;
+
+    while(ard < maxagents && fscanf(arquivo, "%d", &id[ard]) == 1){
+        if (fgets(nome[ard], TAM_NOME, arquivo) == NULL)break;
+        nome[ard][strcspn(nome[ard], "\n")] = '\0';
+
+        if (fgets(scpt[ard], TAM_SCRIPT, arquivo) == NULL)break;
+        scpt[ard][strcspn(scpt[ard], "\n")] = '\0';
+
+        if (fcanf(arquivo, "%d", &nota[ard]) != 1)break;
+        ard++;
     }
 }
