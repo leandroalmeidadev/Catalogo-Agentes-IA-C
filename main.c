@@ -23,6 +23,7 @@ int main(){
 
     //acd = Agentes Cadastrados
     acd = carregarAgentes(ids, nomes, scripts, notas, MAX_AGENT);
+    printf("Arquivos carregados com sucesso");
 
     do{
         exibirMenu();
@@ -73,8 +74,6 @@ int main(){
 
     }while(opcao != 0);
 
-    
-
 }
 
 void limparBuffer(){
@@ -84,8 +83,8 @@ void limparBuffer(){
 
 void exibirMenu(){
     printf("\n===== CATALOGO DE AGENTES =====\n");
-    printf("1- Cadastrar novo agente\n");
-    printf("2- Listar os agentes cadastrados\n");
+    printf("1- Cadastrar novo agente\n");//concluido
+    printf("2- Listar os agentes cadastrados\n");//concluido a parte de listagem, falta impletar edição e exclusão
     printf("3- Buscar agentes já cadastrados\n");
     printf("0- Sair\n");
     printf("Escolha uma opção: ");
