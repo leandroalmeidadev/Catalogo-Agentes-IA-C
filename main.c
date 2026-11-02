@@ -4,14 +4,18 @@
 #define MAX_AGENT 50
 #define TAM_NOME 80
 #define TAM_SCRIPT 1000
-#define VALOR_NOTA 5
+#define NOTA_MAX 5
 
 int cadastrarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int i);
 int salvarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int a);
 void listarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int a);
 int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 
+//funções de busca
+int editarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents, int maxnota);
+
 void exibirMenu();
+void exibirMenuDeBusca();
 
 void limparBuffer();
 
@@ -30,7 +34,7 @@ int main(){
 
     do{
         exibirMenu();
-        if(scanf("%d", &opcao) == 0){
+        if (scanf("%d", &opcao) == 0){
             limparBuffer();
             opcao = 0;
         }
@@ -62,6 +66,17 @@ int main(){
 
         case 3:
             printf("Voce escolheu Buscar agentes cadastrados\n");
+            exibirMenuDeBusca();
+            if (scanf("%d", &opcao) == 0){
+                limparBuffer();
+                opcao = 0;
+            }
+
+            switch(opcao){
+                
+                case 1:
+                    editarAgente(ids, nomes, scripts, notas, acd, NOTA_MAX);
+            }
 
             break;
 
@@ -90,6 +105,18 @@ void exibirMenu(){
     printf("|1- Cadastrar novo agente         |\n");//concluido
     printf("|2- Listar os agentes cadastrados |\n");//concluido a parte de listagem, falta impletar edição e exclusão
     printf("|3- Buscar agentes já cadastrados |\n");
+    printf("|0- Sair                          |\n");
+    printf("Escolha uma opção: ");
+}
+
+void exibirMenuDeBusca(){
+     printf("\n======= BUSCA DE AGENTES =========");
+    printf("\n _________________________________\n");
+    printf("|1- Buscar por Id                 |\n");
+    printf("|2- Buscar por Nome               |\n");
+    printf("|3- Buscar por Função             |\n");
+    printf("|4- Buscar por Palavra chave      |\n");
+    printf("|5- Buscar por Nota               |\n");
     printf("|0- Sair                          |\n");
     printf("Escolha uma opção: ");
 }
@@ -172,4 +199,114 @@ int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], in
         ard++;
     }
     return ard;
+}
+
+int editarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents, int maxnota){
+    int idBuscado, opcao;
+    int posicao = -1;
+
+    printf("\nInsira o ID do agente que deseja editar: ");
+    if (scanf("%d", &idBuscado) != 1){
+        limparBuffer();
+        printf("ID solicitado invalido\n");
+        return 0;
+    }
+    limparBuffer();
+
+    for (int i = 0; i < maxagents; i++){
+        if (id[i] == idBuscado){
+            posicao = i;
+            break;
+        }
+    }
+
+    if (posicao == -1){
+        printf("Agente não encontrado...\n");
+        return 0;
+    }
+
+    printf("\n======= AGENTE ENCONTRADO ========\n");
+    printf("Id: %d\n", id[posicao]);
+    printf("Nome: %s\n", nome[posicao]);
+    printf("Script: %s\n", scpt[posicao]);
+    printf("Nota: %d\n", nota[posicao]);
+
+    printf("\n====== O QUE DESEJA EDITAR =======");
+    printf("\n _________________________________\n");
+    printf("|1- Nome                          |\n");
+    printf("|2- Script                        |\n");
+    printf("|3- Nota                          |\n");
+    printf("|4- Todas as informações          |\n");
+    printf("|0- Cancelar                      |\n");
+    printf("Escolha uma opção: ");
+
+    if (scanf("%d", &opcao) != 1){
+        limparBuffer();
+        printf("Erro ao armazenar a opção escolhida...");
+        return 0;
+    }
+    limparBuffer();
+
+    switch(opcao){
+
+    case 1:
+        printf("Insira o novo nome do Agente: ");
+
+        if (fgets(nome[posicao], TAM_NOME, stdin) == NULL)return 0;
+        nome[posicao][strcspn(nome[posicao], "\n")] = '\0';
+
+        break;
+    
+    case 2:
+        printf("Insira o novo script do Agente: ");
+        if (fgets(scpt[posicao], TAM_SCRIPT, stdin) == NULL)return 0;
+        scpt[posicao][strcspn(scpt[posicao], "\n")] = '\0';
+
+        break;
+
+    case 3:
+        printf("Insira a nova nota do Agente: ");
+        if (scanf("%d", &nota[posicao]) != 1 || nota[posicao] < 0 || nota[posicao] > maxnota){
+            limparBuffer();
+            printf("Nota Invalida...\n");
+            return 0;
+        }
+        limparBuffer();
+        break;
+
+    case 4:
+        printf("Insira o novo nome do Agente: ");
+        if (fgets(nome[posicao], TAM_NOME, stdin) == NULL)return 0;
+        nome[posicao][strcspn(nome[posicao], "\n")] = '\0';
+
+        printf("Insira o novo script do Agente: ");
+        if (fgets(scpt[posicao], TAM_SCRIPT, stdin) == NULL)return 0;
+        scpt[posicao][strcspn(scpt[posicao], "\n")] = '\0';
+
+        printf("Insira a nova nota do Agente: ");
+        if (scanf("%d", &nota[posicao]) != 1 || nota[posicao] < 0 || nota[posicao] > maxnota){
+            limparBuffer();
+            printf("Nota Invalida...\n");
+            return 0;
+        }
+        limparBuffer();
+        break;
+
+    case 0:
+        printf("Edição cancelada, Saindo...\n");
+        return 0;
+    
+    default:
+        printf("Opção Invalida...\n");
+    }
+
+    if (salvarAgentes(id, nome, scpt, nota, maxagents) == 0){
+        printf("Erro ao salvar as alterações.\n");
+        return 0;
+    }
+
+    printf("\n! Agente atualizado com sucesso !\n");
+
+    return 1;
+
 }
