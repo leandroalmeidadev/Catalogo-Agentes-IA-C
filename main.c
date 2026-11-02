@@ -24,7 +24,7 @@ int main(){
     //acd = Agentes Cadastrados
     acd = carregarAgentes(ids, nomes, scripts, notas, MAX_AGENT);
     if (acd > 0){
-        printf("Arquivos carregados com sucesso");
+        printf("Arquivos carregados com sucesso\n");
     }
     
 
@@ -85,11 +85,12 @@ void limparBuffer(){
 }
 
 void exibirMenu(){
-    printf("\n===== CATALOGO DE AGENTES =====\n");
-    printf("1- Cadastrar novo agente\n");//concluido
-    printf("2- Listar os agentes cadastrados\n");//concluido a parte de listagem, falta impletar edição e exclusão
-    printf("3- Buscar agentes já cadastrados\n");
-    printf("0- Sair\n");
+    printf("\n====== CATALOGO DE AGENTES =======");
+    printf("\n _________________________________\n");
+    printf("|1- Cadastrar novo agente         |\n");//concluido
+    printf("|2- Listar os agentes cadastrados |\n");//concluido a parte de listagem, falta impletar edição e exclusão
+    printf("|3- Buscar agentes já cadastrados |\n");
+    printf("|0- Sair                          |\n");
     printf("Escolha uma opção: ");
 }
 
@@ -139,11 +140,12 @@ int salvarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int 
 }
 
 void listarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int a){
+    printf("\n-----------------LISTA DE AGENTES------------------");
     for (int i = 0; i < a; i++){
         printf("\n============================================================================================\n");
-        printf("Id: %d\nNome: %s\nScript: %s\nNota: %d\n", id[i], nome[i], scpt[i], nota[i]);
-        // printf("\n============================================================================================\n");
+        printf("|Id: %d|\n|Nome: %s|\n|Script: %s|\n|Nota: %d|", id[i], nome[i], scpt[i], nota[i]);
     }
+    printf("\n============================================================================================\n");
 }
 
 int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents){
