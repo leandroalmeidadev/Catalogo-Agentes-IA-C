@@ -23,7 +23,10 @@ int main(){
 
     //acd = Agentes Cadastrados
     acd = carregarAgentes(ids, nomes, scripts, notas, MAX_AGENT);
-    printf("Arquivos carregados com sucesso");
+    if (acd > 0){
+        printf("Arquivos carregados com sucesso");
+    }
+    
 
     do{
         exibirMenu();
@@ -120,7 +123,7 @@ int cadastrarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], in
 }
 
 int salvarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int a){
-    FILE *arquivo = fopen("AgentesCadastrados.txt", "a");
+    FILE *arquivo = fopen("AgentesCadastrados.txt", "w");
     if (arquivo == NULL){
         printf("Arquivo de salvaAgentes não foi possivel ser aberto");
         return 0;
@@ -129,7 +132,7 @@ int salvarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int 
         fprintf(arquivo, "%d\n", id[i]);
         fprintf(arquivo, "%s\n", nome[i]);
         fprintf(arquivo, "%s\n", scpt[i]);
-        fprintf(arquivo, "%d\n", nota[i]);
+        fprintf(arquivo, "%d\n\n", nota[i]);
     }
     fclose(arquivo);
     return 1;
@@ -153,6 +156,10 @@ int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], in
     int ard = 0;
 
     while(ard < maxagents && fscanf(arquivo, "%d", &id[ard]) == 1){
+
+        int c;
+        while ((c = fgetc(arquivo)) != '\n' && c != EOF);
+
         if (fgets(nome[ard], TAM_NOME, arquivo) == NULL)break;
         nome[ard][strcspn(nome[ard], "\n")] = '\0';
 
@@ -162,4 +169,5 @@ int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], in
         if (fscanf(arquivo, "%d", &nota[ard]) != 1)break;
         ard++;
     }
+    return ard;
 }
