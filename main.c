@@ -14,6 +14,7 @@ int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], in
 //funções de busca
 int editarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents, int maxnota, int posicao);
 int buscarId(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
+int buscarNome(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 
 //Menus
 void exibirMenu();
@@ -80,9 +81,8 @@ int main(){
                 case 1:
                     int posicao = buscarId(ids, nomes, scripts, notas, acd);
 
-                    if (posicao == -1){
-                        break;
-                    }
+                    if (posicao == -1)break;
+
                     exibirMenuEditarouNao();
                     if (scanf("%d", &opcao) == 0){
                         limparBuffer();
@@ -101,8 +101,37 @@ int main(){
                         default:
                             printf("Opção Invalida...\n");
                     }
-            }
+                break;
+                
+                case 2:
+                    posicao = buscarNome(ids, nomes, scripts, notas, acd);
 
+                    if (posicao == -1)break;
+
+                    exibirMenuEditarouNao();
+                    if (scanf("%d", &opcao) ==0){
+                        limparBuffer();
+                        opcao = 0;
+                    }
+
+                    switch(opcao){
+                        case 1:
+                            editarAgente(ids, nomes, scripts, notas, acd, NOTA_MAX, posicao);
+                            break;
+                        
+                        case 2:
+                            printf("Voce escolheu voltar\n");
+                            break;
+                        
+                        default:
+                            printf("Opção Invalida...\n");
+                    }
+                break;
+
+                case 3:
+                    posicao ;
+                break;
+            }
             break;
 
         case 0:
@@ -332,6 +361,37 @@ int buscarId(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[
         if (id[i] == idBusca){
             posicao = i;
             break;
+        }
+    }
+
+    if (posicao == -1){
+        printf("Agente não encontrado...\n");
+        return -1;
+    }
+
+    printf("\n======= AGENTE ENCONTRADO ========\n");
+    printf("Id: %d\n", id[posicao]);
+    printf("Nome: %s\n", nome[posicao]);
+    printf("Script: %s\n", scpt[posicao]);
+    printf("Nota: %d\n", nota[posicao]);
+
+    return posicao;
+}
+
+int buscarNome(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents){
+    char nomeBusca[TAM_NOME];
+    int posicao = -1;
+
+    limparBuffer();
+
+    printf("\nInsira o Nome do agente que deseja buscar: ");
+    if (fgets(nomeBusca, TAM_NOME, stdin) == NULL )return -1;
+
+    nomeBusca[strcspn(nomeBusca, "\n")] = '\0';
+
+    for (int i = 0; i < maxagents; i++){
+        if (strcmp(nome[i], nomeBusca) == 0){
+            posicao = i;
         }
     }
 
