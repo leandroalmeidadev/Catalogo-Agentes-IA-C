@@ -6,20 +6,24 @@
 #define TAM_SCRIPT 1000
 #define NOTA_MAX 5
 
+//funções de cadastro, salvamento, listagem e permanencia dos dados após o fechar o programa
 int cadastrarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int i);
 int salvarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int a);
 void listarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int a);
 int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 
-//funções de busca
+//funções de editar e excluir agente
 int editarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents, int maxnota, int posicao);
+int excluirAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int total, int posicao);
+
+//funções de busca
 int buscarId(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 int buscarNome(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 
 //Menus
 void exibirMenu();
 void exibirMenuDeBusca();
-void exibirMenuEditarouNao();
+void exibirMenuEditarOuExcluir();
 
 void limparBuffer();
 
@@ -83,7 +87,7 @@ int main(){
 
                     if (posicao == -1)break;
 
-                    exibirMenuEditarouNao();
+                    exibirMenuEditarOuExcluir();
                     if (scanf("%d", &opcao) == 0){
                         limparBuffer();
                         opcao = 0;
@@ -95,8 +99,16 @@ int main(){
                             break;
                         
                         case 2:
+                            if (posicao != 1){
+                                acd = excluirAgente(ids, nomes, scripts, notas, acd, posicao);
+
+                                salvarAgentes(ids, nomes, scripts, notas, acd);
+                            }
+                        break;
+                        
+                        case 0:
                             printf("Voce escolheu voltar\n");
-                            break;
+                        break;
                         
                         default:
                             printf("Opção Invalida...\n");
@@ -108,7 +120,7 @@ int main(){
 
                     if (posicao == -1)break;
 
-                    exibirMenuEditarouNao();
+                    exibirMenuEditarOuExcluir();
                     if (scanf("%d", &opcao) ==0){
                         limparBuffer();
                         opcao = 0;
@@ -117,11 +129,19 @@ int main(){
                     switch(opcao){
                         case 1:
                             editarAgente(ids, nomes, scripts, notas, acd, NOTA_MAX, posicao);
-                            break;
+                        break;
                         
                         case 2:
+                            if (posicao != 1){
+                                acd = excluirAgente(ids, nomes, scripts, notas, acd, posicao);
+
+                                salvarAgentes(ids, nomes, scripts, notas, acd);
+                            }
+                        break;
+
+                        case 0:
                             printf("Voce escolheu voltar\n");
-                            break;
+                        break;
                         
                         default:
                             printf("Opção Invalida...\n");
@@ -137,7 +157,7 @@ int main(){
         case 0:
             printf("Voce escolheu Sair\n");
 
-            break;
+        break;
     
         default:
             printf("Opção Invalida...\n");
@@ -175,10 +195,11 @@ void exibirMenuDeBusca(){
     printf("Escolha uma opção: ");
 }
 
-void exibirMenuEditarouNao(){
+void exibirMenuEditarOuExcluir(){
     printf("\nO que deseja fazer:\n");
     printf("|1- Editar\n");
-    printf("|2- Voltar\n");
+    printf("|2- Excluir o agente\n");
+    printf("|0- Voltar\n");
     printf("|Escolha uma opção: ");
 }
 
@@ -407,4 +428,19 @@ int buscarNome(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int not
     printf("Nota: %d\n", nota[posicao]);
 
     return posicao;
+}
+
+int excluirAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int total, int posicao){
+    for (int i = posicao; i < total - 1; i++){
+        id[i] = id[i + 1];
+        strcpy(nome[i], nome[i +1]);
+        strcpy(scpt[i], scpt[i + 1]);
+        nota[i] = nota[i + 1];
+    }
+
+    total--;
+
+    printf("! Agente excluido com sucesso !\n");
+
+    return total;
 }
