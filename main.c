@@ -73,27 +73,29 @@ int main(){
             break;
 
         case 3:
+            int opcaoBusca;
             printf("Voce escolheu Buscar agentes cadastrados\n");
             exibirMenuDeBusca();
-            if (scanf("%d", &opcao) == 0){
+            if (scanf("%d", &opcaoBusca) == 0){
                 limparBuffer();
-                opcao = 0;
+                opcaoBusca = 0;
             }
 
-            switch(opcao){
+            switch(opcaoBusca){
                 
                 case 1:
+                    int opcaoEditar;
                     int posicao = buscarId(ids, nomes, scripts, notas, acd);
 
                     if (posicao == -1)break;
 
                     exibirMenuEditarOuExcluir();
-                    if (scanf("%d", &opcao) == 0){
+                    if (scanf("%d", &opcaoEditar) == 0){
                         limparBuffer();
-                        opcao = 0;
+                        opcaoEditar = 0;
                     }
 
-                    switch(opcao){
+                    switch(opcaoEditar){
                         case 1:
                             editarAgente(ids, nomes, scripts, notas, acd, NOTA_MAX, posicao);
                             break;
@@ -116,17 +118,18 @@ int main(){
                 break;
                 
                 case 2:
+                    int opcaoNome;
                     posicao = buscarNome(ids, nomes, scripts, notas, acd);
 
                     if (posicao == -1)break;
 
                     exibirMenuEditarOuExcluir();
-                    if (scanf("%d", &opcao) ==0){
+                    if (scanf("%d", &opcaoNome) ==0){
                         limparBuffer();
-                        opcao = 0;
+                        opcaoNome = 0;
                     }
 
-                    switch(opcao){
+                    switch(opcaoNome){
                         case 1:
                             editarAgente(ids, nomes, scripts, notas, acd, NOTA_MAX, posicao);
                         break;
@@ -155,7 +158,7 @@ int main(){
             break;
 
         case 0:
-            printf("Voce escolheu Sair\n");
+            printf("Encerrando o programa...\n");
 
         break;
     
@@ -370,7 +373,7 @@ int buscarId(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[
     int idBusca;
     int posicao = -1;
 
-    printf("\nInsira o ID do agente que deseja editar: ");
+    printf("\nInsira o ID do agente que deseja buscar: ");
     if (scanf("%d", &idBusca) != 1){
         limparBuffer();
         printf("ID solicitado invalido\n");
