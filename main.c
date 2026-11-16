@@ -20,6 +20,7 @@ int excluirAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALID
 //funções de busca
 int buscarId(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 int buscarNome(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
+int buscarFuncao(int id[], char nome [][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 
 //Menus
 void exibirMenu();
@@ -154,7 +155,38 @@ int main(){
                 break;
 
                 case 3:
-                    posicao ;
+                    int opcaoFuncao;
+                    posicao = buscarFuncao(ids, nomes, funcionalidades, scripts, notas, acd);
+
+                    if (posicao == -1)break;
+
+                    exibirMenuEditarOuExcluir();
+                    if (scanf("%d", &opcaoFuncao) ==0){
+                        limparBuffer();
+                        opcaoNome = 0;
+                    }
+
+                    switch(opcaoFuncao){
+                        case 1:
+                            editarAgente(ids, nomes, funcionalidades, scripts, notas, acd, NOTA_MAX, posicao);
+                        break;
+                        
+                        case 2:
+                            if (posicao != 1){
+                                acd = excluirAgente(ids, nomes, funcionalidades, scripts, notas, acd, posicao);
+
+                                salvarAgentes(ids, nomes, funcionalidades, scripts, notas, acd);
+                            }
+                        break;
+
+                        case 0:
+                            printf("Voce escolheu voltar\n");
+                        break;
+                        
+                        default:
+                            printf("Opção Invalida...\n");
+                    }
+
                 break;
             }
             break;
@@ -457,6 +489,39 @@ int buscarNome(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE
     printf("Nota: %d\n", nota[posicao]);
 
     return posicao;
+}
+
+int buscarFuncao(int id[], char nome [][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents){
+    char funcaoBusca[TAM_FUNCIONALIDADE];
+    int posicao = -1;
+
+    limparBuffer();
+
+    printf("\nInsira a Funcionalidade do Agente que deseja buscar: ");
+    if (fgets(funcaoBusca, TAM_FUNCIONALIDADE, stdin) == NULL)return -1;
+
+    funcaoBusca[strcspn(funcaoBusca, "\n")] = '\0';
+
+    for (int i = 0; i < maxagents; i++){
+        if (strcmp(funcao[i], funcaoBusca) == 0){
+            posicao = i;
+        }
+    }
+
+    if (posicao == -1){
+        printf("Agente não encontrado...\n");
+        return -1;
+    }
+
+    printf("\n======= AGENTE ENCONTRADO ========\n");
+    printf("Id: %d\n", id[posicao]);
+    printf("Nome: %s\n", nome[posicao]);
+    printf("Funcionalidade: %s\n", funcao[posicao]);
+    printf("Script: %s\n", scpt[posicao]);
+    printf("Nota: %d\n", nota[posicao]);
+
+    return posicao;
+
 }
 
 int excluirAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int total, int posicao){
