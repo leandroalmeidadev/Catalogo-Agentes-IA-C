@@ -3,22 +3,23 @@
 
 #define MAX_AGENT 50
 #define TAM_NOME 80
+#define TAM_FUNCIONALIDADE 30
 #define TAM_SCRIPT 1000
 #define NOTA_MAX 5
 
 //funções de cadastro, salvamento, listagem e permanencia dos dados após o fechar o programa
-int cadastrarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int i);
-int salvarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int a);
-void listarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int a);
-int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
+int cadastrarAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int i);
+int salvarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int a);
+void listarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int a);
+int carregarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 
 //funções de editar e excluir agente
-int editarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents, int maxnota, int posicao);
-int excluirAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int total, int posicao);
+int editarAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents, int maxnota, int posicao);
+int excluirAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int total, int posicao);
 
 //funções de busca
-int buscarId(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
-int buscarNome(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
+int buscarId(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
+int buscarNome(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 
 //Menus
 void exibirMenu();
@@ -30,11 +31,12 @@ void limparBuffer();
 int main(){
     int ids[MAX_AGENT], notas[MAX_AGENT];
     char nomes[MAX_AGENT][TAM_NOME];
+    char funcionalidades[MAX_AGENT][TAM_FUNCIONALIDADE];
     char scripts[MAX_AGENT][TAM_SCRIPT];
     int acd = 0, opcao;
 
     //acd = Agentes Cadastrados
-    acd = carregarAgentes(ids, nomes, scripts, notas, MAX_AGENT);
+    acd = carregarAgentes(ids, nomes, funcionalidades, scripts, notas, MAX_AGENT);
     if (acd > 0){
         printf("Arquivos carregados com sucesso\n");
     }
@@ -51,7 +53,7 @@ int main(){
     
         case 1:
             if (acd < MAX_AGENT){
-                if (cadastrarAgente(ids, nomes, scripts, notas, acd) == 1){
+                if (cadastrarAgente(ids, nomes, funcionalidades, scripts, notas, acd) == 1){
                     acd++;
                     printf("Cadastro de Agente realizado com Sucesso\n");
                 }
@@ -68,7 +70,7 @@ int main(){
 
         case 2:
             printf("Voce escolheu Listar os agentes\n");
-            listarAgentes(ids, nomes, scripts, notas, acd);
+            listarAgentes(ids, nomes, funcionalidades, scripts, notas, acd);
 
             break;
 
@@ -85,7 +87,7 @@ int main(){
                 
                 case 1:
                     int opcaoEditar;
-                    int posicao = buscarId(ids, nomes, scripts, notas, acd);
+                    int posicao = buscarId(ids, nomes, funcionalidades, scripts, notas, acd);
 
                     if (posicao == -1)break;
 
@@ -97,14 +99,14 @@ int main(){
 
                     switch(opcaoEditar){
                         case 1:
-                            editarAgente(ids, nomes, scripts, notas, acd, NOTA_MAX, posicao);
+                            editarAgente(ids, nomes, funcionalidades, scripts, notas, acd, NOTA_MAX, posicao);
                             break;
                         
                         case 2:
                             if (posicao != 1){
-                                acd = excluirAgente(ids, nomes, scripts, notas, acd, posicao);
+                                acd = excluirAgente(ids, nomes, funcionalidades, scripts, notas, acd, posicao);
 
-                                salvarAgentes(ids, nomes, scripts, notas, acd);
+                                salvarAgentes(ids, nomes, funcionalidades, scripts, notas, acd);
                             }
                         break;
                         
@@ -119,7 +121,7 @@ int main(){
                 
                 case 2:
                     int opcaoNome;
-                    posicao = buscarNome(ids, nomes, scripts, notas, acd);
+                    posicao = buscarNome(ids, nomes, funcionalidades, scripts, notas, acd);
 
                     if (posicao == -1)break;
 
@@ -131,14 +133,14 @@ int main(){
 
                     switch(opcaoNome){
                         case 1:
-                            editarAgente(ids, nomes, scripts, notas, acd, NOTA_MAX, posicao);
+                            editarAgente(ids, nomes, funcionalidades, scripts, notas, acd, NOTA_MAX, posicao);
                         break;
                         
                         case 2:
                             if (posicao != 1){
-                                acd = excluirAgente(ids, nomes, scripts, notas, acd, posicao);
+                                acd = excluirAgente(ids, nomes, funcionalidades, scripts, notas, acd, posicao);
 
-                                salvarAgentes(ids, nomes, scripts, notas, acd);
+                                salvarAgentes(ids, nomes, funcionalidades, scripts, notas, acd);
                             }
                         break;
 
@@ -206,7 +208,7 @@ void exibirMenuEditarOuExcluir(){
     printf("|Escolha uma opção: ");
 }
 
-int cadastrarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int i){
+int cadastrarAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int i){
     printf("\nInsira o ID do Agente: ");
     if (scanf("%d", &id[i]) == 0){
         limparBuffer();
@@ -216,6 +218,10 @@ int cadastrarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], in
     printf("Insira o nome do Agente: ");
     if (fgets(nome[i],TAM_NOME,stdin) == NULL)return 0;
     nome[i][strcspn(nome[i], "\n")] = '\0';
+
+    printf("Insira a funcionalidade do Agente: ");
+    if (fgets(funcao[i], TAM_FUNCIONALIDADE, stdin) == NULL)return 0;
+    funcao[i][strcspn(funcao[i], "\n")] = '\0';
 
     printf("Insira o script do Agente: ");
     if (fgets(scpt[i],TAM_SCRIPT,stdin) == NULL)return 0;
@@ -227,7 +233,7 @@ int cadastrarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], in
         return 0;
     }
 
-    if (salvarAgentes(id, nome, scpt, nota, i + 1) == 0){
+    if (salvarAgentes(id, nome, funcao, scpt, nota, i + 1) == 0){
         printf("Erro em salvar agente.\n");
         return 0;
     }
@@ -235,7 +241,7 @@ int cadastrarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], in
     return 1;
 }
 
-int salvarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int a){
+int salvarAgentes(int id[], char nome[][TAM_NOME],char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int a){
     FILE *arquivo = fopen("AgentesCadastrados.txt", "w");
     if (arquivo == NULL){
         printf("Arquivo de salvaAgentes não foi possivel ser aberto");
@@ -244,6 +250,7 @@ int salvarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int 
     for (int i = 0; i < a; i++){
         fprintf(arquivo, "%d\n", id[i]);
         fprintf(arquivo, "%s\n", nome[i]);
+        fprintf(arquivo, "s\n", funcao[i]);
         fprintf(arquivo, "%s\n", scpt[i]);
         fprintf(arquivo, "%d\n\n", nota[i]);
     }
@@ -251,16 +258,16 @@ int salvarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int 
     return 1;
 }
 
-void listarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int a){
+void listarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int a){
     printf("\n-----------------LISTA DE AGENTES------------------");
     for (int i = 0; i < a; i++){
         printf("\n============================================================================================\n");
-        printf("|Id: %d|\n|Nome: %s|\n|Script: %s|\n|Nota: %d|", id[i], nome[i], scpt[i], nota[i]);
+        printf("|Id: %d|\n|Nome: %s|\n|Funcionalidade: %s|\n|Script: %s|\n|Nota: %d|", id[i], nome[i], funcao[i], scpt[i], nota[i]);
     }
     printf("\n============================================================================================\n");
 }
 
-int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents){
+int carregarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents){
     FILE *arquivo = fopen("AgentesCadastrados.txt", "r");
     if (arquivo == NULL){
         printf("Arquivo de carregarAgentes não foi possivel ser aberto");
@@ -277,6 +284,9 @@ int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], in
         if (fgets(nome[ard], TAM_NOME, arquivo) == NULL)break;
         nome[ard][strcspn(nome[ard], "\n")] = '\0';
 
+        if (fgets(funcao[ard], TAM_FUNCIONALIDADE, arquivo) == NULL)break;
+        funcao[ard][strcspn(funcao[ard], "\n")] = '\0';
+
         if (fgets(scpt[ard], TAM_SCRIPT, arquivo) == NULL)break;
         scpt[ard][strcspn(scpt[ard], "\n")] = '\0';
 
@@ -286,15 +296,16 @@ int carregarAgentes(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], in
     return ard;
 }
 
-int editarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents, int maxnota, int posicao){
+int editarAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents, int maxnota, int posicao){
     int opcao;
 
     printf("\n====== O QUE DESEJA EDITAR =======");
     printf("\n _________________________________\n");
     printf("|1- Nome                          |\n");
-    printf("|2- Script                        |\n");
-    printf("|3- Nota                          |\n");
-    printf("|4- Todas as informações          |\n");
+    printf("|2- Funcionalidade                 |\n");
+    printf("|3- Script                        |\n");
+    printf("|4- Nota                          |\n");
+    printf("|5- Todas as informações          |\n");
     printf("|0- Cancelar                      |\n");
     printf("Escolha uma opção: ");
 
@@ -316,14 +327,23 @@ int editarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int n
         break;
     
     case 2:
+        printf("Insira a nova funcionalidade do Agente: ");
+
+        if (fgets(funcao[posicao], TAM_FUNCIONALIDADE, stdin) == NULL)return 0;
+        funcao[posicao][strcspn(funcao[posicao], "\n")] = '\0';
+
+        break;
+    
+    case 3:
         printf("Insira o novo script do Agente: ");
         if (fgets(scpt[posicao], TAM_SCRIPT, stdin) == NULL)return 0;
         scpt[posicao][strcspn(scpt[posicao], "\n")] = '\0';
 
         break;
 
-    case 3:
+    case 4:
         printf("\nInsira a nova nota do Agente: ");
+
         if (scanf("%d", &nota[posicao]) != 1 || nota[posicao] < 0 || nota[posicao] > maxnota){
             limparBuffer();
             printf("Nota Invalida...\n");
@@ -332,10 +352,14 @@ int editarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int n
         limparBuffer();
         break;
 
-    case 4:
+    case 5:
         printf("\nInsira o novo nome do Agente: ");
         if (fgets(nome[posicao], TAM_NOME, stdin) == NULL)return 0;
         nome[posicao][strcspn(nome[posicao], "\n")] = '\0';
+
+        printf("Insira a nova funcionalidade do Agente: ");
+        if (fgets(funcao[posicao], TAM_FUNCIONALIDADE, stdin) == NULL)return 0;
+        funcao[posicao][strcspn(funcao[posicao], "\n")] = '\0';
 
         printf("\nInsira o novo script do Agente: ");
         if (fgets(scpt[posicao], TAM_SCRIPT, stdin) == NULL)return 0;
@@ -358,7 +382,7 @@ int editarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int n
         printf("Opção Invalida...\n");
     }
 
-    if (salvarAgentes(id, nome, scpt, nota, maxagents) == 0){
+    if (salvarAgentes(id, nome, funcao, scpt, nota, maxagents) == 0){
         printf("Erro ao salvar as alterações.\n");
         return 0;
     }
@@ -369,7 +393,7 @@ int editarAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int n
 
 }
 
-int buscarId(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents){
+int buscarId(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents){
     int idBusca;
     int posicao = -1;
 
@@ -396,13 +420,14 @@ int buscarId(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[
     printf("\n======= AGENTE ENCONTRADO ========\n");
     printf("Id: %d\n", id[posicao]);
     printf("Nome: %s\n", nome[posicao]);
+    printf("Funcionalidade: %s\n", funcao[posicao]);
     printf("Script: %s\n", scpt[posicao]);
     printf("Nota: %d\n", nota[posicao]);
 
     return posicao;
 }
 
-int buscarNome(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int maxagents){
+int buscarNome(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents){
     char nomeBusca[TAM_NOME];
     int posicao = -1;
 
@@ -427,16 +452,18 @@ int buscarNome(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int not
     printf("\n======= AGENTE ENCONTRADO ========\n");
     printf("Id: %d\n", id[posicao]);
     printf("Nome: %s\n", nome[posicao]);
+    printf("Funcionalidade: %s\n", funcao[posicao]);
     printf("Script: %s\n", scpt[posicao]);
     printf("Nota: %d\n", nota[posicao]);
 
     return posicao;
 }
 
-int excluirAgente(int id[], char nome[][TAM_NOME], char scpt[][TAM_SCRIPT], int nota[], int total, int posicao){
+int excluirAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int total, int posicao){
     for (int i = posicao; i < total - 1; i++){
         id[i] = id[i + 1];
         strcpy(nome[i], nome[i +1]);
+        strcpy(funcao[i], funcao[i + 1]);
         strcpy(scpt[i], scpt[i + 1]);
         nota[i] = nota[i + 1];
     }
