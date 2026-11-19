@@ -4,6 +4,7 @@
 #define MAX_AGENT 50
 #define TAM_NOME 80
 #define TAM_FUNCIONALIDADE 30
+#define TAM_PALAVRA_CHAVE 20
 #define TAM_SCRIPT 1000
 #define NOTA_MAX 5
 
@@ -21,6 +22,7 @@ int excluirAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALID
 int buscarId(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 int buscarNome(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 int buscarFuncao(int id[], char nome [][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
+int buscarPalavraChave(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 
 //Menus
 void exibirMenu();
@@ -91,7 +93,7 @@ int main(){
                     int posicao = buscarId(ids, nomes, funcionalidades, scripts, notas, acd);
 
                     if (posicao == -1)break;
-
+                    
                     exibirMenuEditarOuExcluir();
                     if (scanf("%d", &opcaoEditar) == 0){
                         limparBuffer();
@@ -188,6 +190,10 @@ int main(){
                     }
 
                 break;
+
+                case 4:
+                    //int opcaoPalavraChave;
+
             }
             break;
 
@@ -282,7 +288,7 @@ int salvarAgentes(int id[], char nome[][TAM_NOME],char funcao[][TAM_FUNCIONALIDA
     for (int i = 0; i < a; i++){
         fprintf(arquivo, "%d\n", id[i]);
         fprintf(arquivo, "%s\n", nome[i]);
-        fprintf(arquivo, "s\n", funcao[i]);
+        fprintf(arquivo, "%s\n", funcao[i]);
         fprintf(arquivo, "%s\n", scpt[i]);
         fprintf(arquivo, "%d\n\n", nota[i]);
     }
@@ -522,6 +528,18 @@ int buscarFuncao(int id[], char nome [][TAM_NOME], char funcao[][TAM_FUNCIONALID
 
     return posicao;
 
+}
+
+int buscarPalavraChave(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents){
+    char palavraBusca;
+    int posicao = -1;
+
+    limparBuffer();
+
+    printf("\nInsira a Palavra-Chave que deseja buscar: ");
+    if (fgets(palavraBusca, TAM_PALAVRA_CHAVE, stdin) == NULL)return -1;
+
+    
 }
 
 int excluirAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int total, int posicao){
