@@ -1,42 +1,42 @@
 1
 SupportBot Alpha
-s
+Chat Bot
 Focado em atendimento ao publico
 2
 
 2
 CodeGuardian
-s
+Assistente de Programação
 Engenheiro de software sênior que analisa o código e busca falhas de segurança.
 5
 
 3
 HelpDesk Express
-s
+Bot de Triagem
 Bot de triagem rápida para chamados de suporte técnico de TI.
 2
 
 4
 FinHelper Pro
-s
+Financias
 Auxiliar em financias e gestão de recursos
 3
 
 5
 RefactorMaster
-s
+Assistente de Programação
 Especialista em refatoração de código legado em C e Java.
 5
 
 6
 Claude
-s
+Assistente de Programação
 Um assistente de IA focado em ajudar a escrever e revisar textos, programar, analisar informações, pesquisar na web e muito mais.
 5
 
 7
 Nexus
-s
-cado em atendimento ao publico geral
+Chat Bot
+software focado em atendimento ao publico geral
 5
 

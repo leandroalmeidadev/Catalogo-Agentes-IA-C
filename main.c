@@ -3,7 +3,7 @@
 
 #define MAX_AGENT 50
 #define TAM_NOME 80
-#define TAM_FUNCIONALIDADE 30
+#define TAM_FUNCIONALIDADE 1000
 #define TAM_PALAVRA_CHAVE 20
 #define TAM_SCRIPT 1000
 #define NOTA_MAX 5
@@ -80,7 +80,8 @@ int main(){
         case 3:
             int opcaoBusca;
             printf("Voce escolheu Buscar agentes cadastrados\n");
-            exibirMenuDeBusca();
+            do{
+                exibirMenuDeBusca();
             if (scanf("%d", &opcaoBusca) == 0){
                 limparBuffer();
                 opcaoBusca = 0;
@@ -94,7 +95,8 @@ int main(){
 
                     if (posicao == -1)break;
                     
-                    exibirMenuEditarOuExcluir();
+                    do{
+                        exibirMenuEditarOuExcluir();
                     if (scanf("%d", &opcaoEditar) == 0){
                         limparBuffer();
                         opcaoEditar = 0;
@@ -120,6 +122,7 @@ int main(){
                         default:
                             printf("Opção Invalida...\n");
                     }
+                    }while(opcaoEditar != 0);
                 break;
                 
                 case 2:
@@ -128,7 +131,8 @@ int main(){
 
                     if (posicao == -1)break;
 
-                    exibirMenuEditarOuExcluir();
+                    do{
+                        exibirMenuEditarOuExcluir();
                     if (scanf("%d", &opcaoNome) ==0){
                         limparBuffer();
                         opcaoNome = 0;
@@ -154,6 +158,7 @@ int main(){
                         default:
                             printf("Opção Invalida...\n");
                     }
+                    }while(opcaoNome != 0);
                 break;
 
                 case 3:
@@ -162,10 +167,11 @@ int main(){
 
                     if (posicao == -1)break;
 
-                    exibirMenuEditarOuExcluir();
-                    if (scanf("%d", &opcaoFuncao) ==0){
+                    do{
+                        exibirMenuEditarOuExcluir();
+                    if (scanf("%d", &opcaoFuncao) == 0){
                         limparBuffer();
-                        opcaoNome = 0;
+                        opcaoFuncao = 0;
                     }
 
                     switch(opcaoFuncao){
@@ -188,13 +194,52 @@ int main(){
                         default:
                             printf("Opção Invalida...\n");
                     }
+                    }while(opcaoFuncao != 0);
 
                 break;
 
                 case 4:
-                    //int opcaoPalavraChave;
+                    int opcaoPalavraChave;
+                    posicao = buscarPalavraChave(ids, nomes, funcionalidades, scripts, notas, acd);
+
+                    if (posicao == -1)break;
+
+                    buscarId(ids, nomes, funcionalidades, scripts, notas, acd);
+
+                    do{
+                        exibirMenuEditarOuExcluir();
+                    if (scanf("%d", &opcaoPalavraChave) == 0){
+                        limparBuffer();
+                        opcaoPalavraChave = 0;
+                    }
+
+                    switch(opcaoPalavraChave){
+                        case 1:
+                            editarAgente(ids, nomes, funcionalidades, scripts, notas, acd, NOTA_MAX, posicao);
+                        break;
+
+                        case 2:
+                            if (posicao != 1){
+                                acd = excluirAgente(ids, nomes, funcionalidades, scripts, notas, acd, posicao);
+
+                                salvarAgentes(ids, nomes, funcionalidades, scripts, notas, acd);
+                            }
+                        break;
+
+                        case 0:
+                            printf("Voce escolheu voltar\n");
+                        break;
+
+                        default:
+                            printf("Opção Invalida...\n");
+                    }
+                    }while(opcaoPalavraChave != 0);
+
+                    
+                break;
 
             }
+            }while(opcaoBusca != 0);
             break;
 
         case 0:
@@ -234,7 +279,7 @@ void exibirMenuDeBusca(){
     printf("|3- Buscar por Função             |\n");
     printf("|4- Buscar por Palavra chave      |\n");
     printf("|5- Buscar por Nota               |\n");
-    printf("|0- Sair                          |\n");
+    printf("|0- Voltar                        |\n");
     printf("Escolha uma opção: ");
 }
 
@@ -435,7 +480,7 @@ int buscarId(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE],
     int idBusca;
     int posicao = -1;
 
-    printf("\nInsira o ID do agente que deseja buscar: ");
+    printf("\nInsira o ID do agente que deseja editar: ");
     if (scanf("%d", &idBusca) != 1){
         limparBuffer();
         printf("ID solicitado invalido\n");
@@ -531,15 +576,35 @@ int buscarFuncao(int id[], char nome [][TAM_NOME], char funcao[][TAM_FUNCIONALID
 }
 
 int buscarPalavraChave(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents){
-    char palavraBusca;
-    int posicao = -1;
+    char palavraBusca[TAM_PALAVRA_CHAVE];
+    int agentesencontrados;
 
     limparBuffer();
 
     printf("\nInsira a Palavra-Chave que deseja buscar: ");
     if (fgets(palavraBusca, TAM_PALAVRA_CHAVE, stdin) == NULL)return -1;
 
-    
+    palavraBusca[strcspn(palavraBusca, "\n")] = '\0';
+
+    for (int i = 0; i < maxagents; i++){
+
+        if (strstr(nome[i], palavraBusca) != NULL || strstr(funcao[i], palavraBusca) != NULL || strstr(scpt[i], palavraBusca) != NULL){
+        
+            printf("\n======= AGENTE ENCONTRADO ========\n");
+            printf("Id: %d\n", id[i]);
+            printf("Nome: %s\n", nome[i]);
+            printf("Funcionalidade: %s\n", funcao[i]);
+            printf("Script: %s\n", scpt[i]);
+            printf("Nota: %d\n", nota[i]);
+
+            agentesencontrados++;
+        }
+    }
+
+    if (agentesencontrados == 0){
+        printf("Nenhum Agente Encontrado\n");
+    }
+
 }
 
 int excluirAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int total, int posicao){
