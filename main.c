@@ -9,7 +9,7 @@
 #define NOTA_MAX 5
 
 //funções de cadastro, salvamento, listagem e permanencia dos dados após o fechar o programa
-int cadastrarAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int i);
+int cadastrarAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int i, int *proximoId);
 int salvarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int agentesCadastrados);
 void listarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int agentesCadastrados);
 int carregarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
@@ -39,11 +39,17 @@ int main(){
     char funcionalidades[MAX_AGENT][TAM_FUNCIONALIDADE];
     char scripts[MAX_AGENT][TAM_SCRIPT];
     int acd = 0, opcao;
+    int proximoId = 1;
 
     //acd = Agentes Cadastrados
     acd = carregarAgentes(ids, nomes, funcionalidades, scripts, notas, MAX_AGENT);
     if (acd > 0){
         printf("Arquivos carregados com sucesso\n");
+    }
+    for (int i = 0; i < acd; i++){
+        if (ids[i] >= proximoId){
+            proximoId = ids[i] + 1;
+        }
     }
     
 
@@ -58,7 +64,7 @@ int main(){
     
         case 1:
             if (acd < MAX_AGENT){
-                if (cadastrarAgente(ids, nomes, funcionalidades, scripts, notas, acd) == 1){
+                if (cadastrarAgente(ids, nomes, funcionalidades, scripts, notas, acd, &proximoId) == 1){
                     acd++;
                     printf("Cadastro de Agente realizado com Sucesso\n");
                 }
@@ -323,8 +329,8 @@ void exibirMenu(){
     printf("\n====== CATALOGO DE AGENTES =======");
     printf("\n _________________________________\n");
     printf("|1- Cadastrar novo agente         |\n");//concluido
-    printf("|2- Listar os agentes cadastrados |\n");//concluido a parte de listagem, falta impletar edição e exclusão
-    printf("|3- Buscar agentes já cadastrados |\n");
+    printf("|2- Listar os agentes cadastrados |\n");//concluido
+    printf("|3- Buscar agentes já cadastrados |\n");//concluido
     printf("|0- Sair                          |\n");
     printf("Escolha uma opção: ");
 }
@@ -349,12 +355,9 @@ void exibirMenuEditarOuExcluir(){
     printf("|Escolha uma opção: ");
 }
 
-int cadastrarAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int i){
-    printf("\nInsira o ID do Agente: ");
-    if (scanf("%d", &id[i]) == 0){
-        limparBuffer();
-        return 0;
-    }
+int cadastrarAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int i, int *proximoId){
+    id[i] = *proximoId;
+
     limparBuffer();
     printf("Insira o nome do Agente: ");
     if (fgets(nome[i],TAM_NOME,stdin) == NULL)return 0;
@@ -378,6 +381,8 @@ int cadastrarAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONAL
         printf("Erro em salvar agente.\n");
         return 0;
     }
+    (*proximoId)++;
+
     limparBuffer();
     return 1;
 }
@@ -414,7 +419,7 @@ int carregarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONAL
         printf("Arquivo de carregarAgentes não foi possivel ser aberto");
         return 0;
     }
-    //ard = Agentes Recuperados do Arquivo
+    //ard = Agentes Recuperados do Arquivo "AgentesCadastrados.txt"
     int ard = 0;
 
     while(ard < maxagents && fscanf(arquivo, "%d", &id[ard]) == 1){
