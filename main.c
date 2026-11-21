@@ -147,10 +147,12 @@ int main(){
                         break;
                         
                         case 2:
-                            if (posicao != 1){
+                            if (posicao >= 0 && posicao < acd){
                                 acd = excluirAgente(ids, nomes, funcionalidades, scripts, notas, acd, posicao);
 
                                 salvarAgentes(ids, nomes, funcionalidades, scripts, notas, acd);
+
+                                opcaoNome = 0;
                             }
                         break;
 
@@ -183,10 +185,12 @@ int main(){
                         break;
                         
                         case 2:
-                            if (posicao != 1){
+                            if (posicao >= 0 && posicao < acd){
                                 acd = excluirAgente(ids, nomes, funcionalidades, scripts, notas, acd, posicao);
 
                                 salvarAgentes(ids, nomes, funcionalidades, scripts, notas, acd);
+
+                                opcaoFuncao = 0;
                             }
                         break;
 
@@ -222,10 +226,12 @@ int main(){
                         break;
 
                         case 2:
-                            if (posicao != 1){
+                            if (posicao >= 0 && posicao < acd){
                                 acd = excluirAgente(ids, nomes, funcionalidades, scripts, notas, acd, posicao);
 
                                 salvarAgentes(ids, nomes, funcionalidades, scripts, notas, acd);
+
+                                opcaoPalavraChave = 0;
                             }
                         break;
 
@@ -262,10 +268,12 @@ int main(){
                         break;
 
                         case 2:
-                            if (posicao != 1){
+                            if (posicao >= 0 && posicao < acd){
                                 acd = excluirAgente(ids, nomes, funcionalidades, scripts, notas, acd, posicao);
 
                                 salvarAgentes(ids, nomes, funcionalidades, scripts, notas, acd);
+
+                                opcaoNota = 0;
                             }
                         break;
 
@@ -276,7 +284,7 @@ int main(){
                         default:
                             printf("Opção Invalida...\n");
                     }
-                    }while(opcaoPalavraChave != 0);
+                    }while(opcaoNota != 0);
 
                 break;
 
