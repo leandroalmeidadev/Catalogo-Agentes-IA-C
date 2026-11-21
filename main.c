@@ -16,7 +16,7 @@ int carregarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONAL
 
 //funções de editar e excluir agente
 int editarAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents, int maxnota, int posicao);
-int excluirAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int total, int posicao);
+int excluirAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents, int posicao);
 
 //funções de busca
 int buscarId(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
@@ -109,10 +109,12 @@ int main(){
                             break;
                         
                         case 2:
-                            if (posicao != 1){
+                            if (posicao >= 0 && posicao < acd){
                                 acd = excluirAgente(ids, nomes, funcionalidades, scripts, notas, acd, posicao);
 
                                 salvarAgentes(ids, nomes, funcionalidades, scripts, notas, acd);
+
+                                opcaoEditar = 0;
                             }
                         break;
                         
@@ -685,18 +687,43 @@ int buscarNota(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE
     }
 }
 
-int excluirAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int total, int posicao){
-    for (int i = posicao; i < total - 1; i++){
-        id[i] = id[i + 1];
-        strcpy(nome[i], nome[i +1]);
-        strcpy(funcao[i], funcao[i + 1]);
-        strcpy(scpt[i], scpt[i + 1]);
-        nota[i] = nota[i + 1];
+int excluirAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents, int posicao){
+    
+    int opcaoConfirmar = 0;
+
+    do{
+        printf("\nTem certeza que deseja excluir o Agente:\n");
+        printf("|1- Sim, Excluir o Agente\n");
+        printf("|2- Não, Voltar\n");
+        printf("|Escolha uma opção: ");
+        
+        if (scanf("%d", &opcaoConfirmar) != 1){
+            limparBuffer();
+            printf("Opção Invalida...\n");
+            opcaoConfirmar = -1;
+        }
+        else{
+            limparBuffer();
+        }
+    }while(opcaoConfirmar != 1 && opcaoConfirmar != 2);
+
+    if (opcaoConfirmar == 1){
+        for (int i = posicao; i < maxagents - 1; i++){
+            id[i] = id[i + 1];
+            strcpy(nome[i], nome[i +1]);
+            strcpy(funcao[i], funcao[i + 1]);
+            strcpy(scpt[i], scpt[i + 1]);
+            nota[i] = nota[i + 1];
+        }
+
+        maxagents--;
+
+        printf("! Agente excluido com sucesso !\n");
+
+    }
+    else if (opcaoConfirmar == 2){
+        printf("Agente mantido, voltando...\n");
     }
 
-    total--;
-
-    printf("! Agente excluido com sucesso !\n");
-
-    return total;
+    return maxagents;
 }
