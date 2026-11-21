@@ -10,8 +10,8 @@
 
 //funções de cadastro, salvamento, listagem e permanencia dos dados após o fechar o programa
 int cadastrarAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int i);
-int salvarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int a);
-void listarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int a);
+int salvarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int agentesCadastrados);
+void listarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int agentesCadastrados);
 int carregarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents);
 
 //funções de editar e excluir agente
@@ -30,6 +30,7 @@ void exibirMenu();
 void exibirMenuDeBusca();
 void exibirMenuEditarOuExcluir();
 
+//Limpar o Buffer de Entrada
 void limparBuffer();
 
 int main(){
@@ -381,13 +382,13 @@ int cadastrarAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONAL
     return 1;
 }
 
-int salvarAgentes(int id[], char nome[][TAM_NOME],char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int a){
+int salvarAgentes(int id[], char nome[][TAM_NOME],char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int agentesCadastrados){
     FILE *arquivo = fopen("AgentesCadastrados.txt", "w");
     if (arquivo == NULL){
         printf("Arquivo de salvaAgentes não foi possivel ser aberto");
         return 0;
     }
-    for (int i = 0; i < a; i++){
+    for (int i = 0; i < agentesCadastrados; i++){
         fprintf(arquivo, "%d\n", id[i]);
         fprintf(arquivo, "%s\n", nome[i]);
         fprintf(arquivo, "%s\n", funcao[i]);
@@ -398,9 +399,9 @@ int salvarAgentes(int id[], char nome[][TAM_NOME],char funcao[][TAM_FUNCIONALIDA
     return 1;
 }
 
-void listarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int a){
+void listarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int agentesCadastrados){
     printf("\n-----------------LISTA DE AGENTES------------------");
-    for (int i = 0; i < a; i++){
+    for (int i = 0; i < agentesCadastrados; i++){
         printf("\n============================================================================================\n");
         printf("|Id: %d|\n|Nome: %s|\n|Funcionalidade: %s|\n|Script: %s|\n|Nota: %d|", id[i], nome[i], funcao[i], scpt[i], nota[i]);
     }
