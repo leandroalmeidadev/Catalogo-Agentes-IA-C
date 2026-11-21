@@ -48,9 +48,9 @@ int main(){
 
     do{
         exibirMenu();
-        if (scanf("%d", &opcao) == 0){
+        if (scanf("%d", &opcao) != 1){
             limparBuffer();
-            opcao = 0;
+            opcao = -1;
         }
 
         switch(opcao){
@@ -83,9 +83,9 @@ int main(){
             printf("Voce escolheu Buscar agentes cadastrados\n");
             do{
                 exibirMenuDeBusca();
-            if (scanf("%d", &opcaoBusca) == 0){
+            if (scanf("%d", &opcaoBusca) != 1){
                 limparBuffer();
-                opcaoBusca = 0;
+                opcaoBusca = -1;
             }
 
             switch(opcaoBusca){
@@ -98,9 +98,9 @@ int main(){
                     
                     do{
                         exibirMenuEditarOuExcluir();
-                    if (scanf("%d", &opcaoEditar) == 0){
+                    if (scanf("%d", &opcaoEditar) != 1){
                         limparBuffer();
-                        opcaoEditar = 0;
+                        opcaoEditar = -1;
                     }
 
                     switch(opcaoEditar){
@@ -134,9 +134,9 @@ int main(){
 
                     do{
                         exibirMenuEditarOuExcluir();
-                    if (scanf("%d", &opcaoNome) ==0){
+                    if (scanf("%d", &opcaoNome) != 1){
                         limparBuffer();
-                        opcaoNome = 0;
+                        opcaoNome = -1;
                     }
 
                     switch(opcaoNome){
@@ -170,9 +170,9 @@ int main(){
 
                     do{
                         exibirMenuEditarOuExcluir();
-                    if (scanf("%d", &opcaoFuncao) == 0){
+                    if (scanf("%d", &opcaoFuncao) != 1){
                         limparBuffer();
-                        opcaoFuncao = 0;
+                        opcaoFuncao = -1;
                     }
 
                     switch(opcaoFuncao){
@@ -209,9 +209,9 @@ int main(){
 
                     do{
                         exibirMenuEditarOuExcluir();
-                    if (scanf("%d", &opcaoPalavraChave) == 0){
+                    if (scanf("%d", &opcaoPalavraChave) != 1){
                         limparBuffer();
-                        opcaoPalavraChave = 0;
+                        opcaoPalavraChave = -1;
                     }
 
                     switch(opcaoPalavraChave){
@@ -249,9 +249,9 @@ int main(){
 
                     do{
                         exibirMenuEditarOuExcluir();
-                    if (scanf("%d", &opcaoNota) == 0){
+                    if (scanf("%d", &opcaoNota) != 1){
                         limparBuffer();
-                        opcaoNota = 0;
+                        opcaoNota = -1;
                     }
 
                     switch(opcaoNota){
