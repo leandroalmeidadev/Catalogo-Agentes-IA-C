@@ -292,11 +292,11 @@ int main(){
 
                 case 4:
                     int opcaoPalavraChave;
-                    posicao = buscarPalavraChave(ids, nomes, funcionalidades, scripts, notas, acd, criadores, ultimaModificacao);
+                    if (buscarPalavraChave(ids, nomes, funcionalidades, scripts, notas, acd, criadores, ultimaModificacao) == -1) break;
+
+                    posicao = buscarId(ids, nomes, funcionalidades, scripts, notas, acd, criadores, ultimaModificacao);
 
                     if (posicao == -1)break;
-
-                    buscarId(ids, nomes, funcionalidades, scripts, notas, acd, criadores, ultimaModificacao);
 
                     do{
                         exibirMenuEditarOuExcluir();
@@ -339,11 +339,12 @@ int main(){
 
                 case 5:
                     int opcaoNota;
-                    posicao = buscarNota(ids, nomes, funcionalidades, scripts, notas, acd, criadores, ultimaModificacao);
+                    if (buscarNota(ids, nomes, funcionalidades, scripts, notas, acd, criadores, ultimaModificacao) == -1) break;
+
+                    posicao = buscarId(ids, nomes, funcionalidades, scripts, notas, acd, criadores, ultimaModificacao);
 
                     if (posicao == -1)break;
 
-                    buscarId(ids, nomes, funcionalidades, scripts, notas, acd, criadores, ultimaModificacao);
 
                     do{
                         exibirMenuEditarOuExcluir();
@@ -509,7 +510,7 @@ int salvarUsuario(int id[], char nome[][TAM_NOME_USER], char senha[][TAM_SENHA],
     for (int i = 0; i < usuariosCadastrados; i++){
         fprintf(arquivo, "%d\n", id[i]);
         fprintf(arquivo, "%s\n", nome[i]);
-        fprintf(arquivo, "%s\n", senha[i]);
+        fprintf(arquivo, "%s\n\n", senha[i]);
     }
     fclose(arquivo);
     return 1;
@@ -540,10 +541,8 @@ int loginUsuario(int id[], char nome[][TAM_NOME_USER], char senha[][TAM_SENHA], 
             strcpy(senhaLogado, senha[i]);
             return 1;
         }
-        else{
-            printf("Usuario ou senha incorreto!\n");
-        }
     }
+    printf("Usuario ou senha incorreto!\n");
     
     return 0;
 
@@ -912,6 +911,7 @@ int buscarPalavraChave(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIO
         printf("Nenhum Agente Encontrado\n");
         return -1;
     }
+    return agentesencontrados;
 
 }
 
@@ -945,6 +945,7 @@ int buscarNota(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE
 
     if (agentescadastrados == 0){
         printf("Nenhum Agente encontrado...\n");
+        return -1;
     }
 }
 
