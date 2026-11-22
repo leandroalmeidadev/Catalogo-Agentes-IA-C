@@ -567,7 +567,7 @@ int cadastrarAgente(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONAL
         return 0;
     }
 
-    if (salvarAgentes(id, nome, funcao, scpt, nota, i + 1, criador, ultimaModificacao = 0)){
+    if (salvarAgentes(id, nome, funcao, scpt, nota, i + 1, criador, ultimaModificacao) == 0){
         printf("Erro em salvar agente.\n");
         return 0;
     }
@@ -629,6 +629,8 @@ int carregarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONAL
         scpt[ard][strcspn(scpt[ard], "\n")] = '\0';
 
         if (fscanf(arquivo, "%d", &nota[ard]) != 1)break;
+        int c1;
+        while ((c1 = fgetc(arquivo)) != '\n' && c1 != EOF);
 
         if (fgets(criador[ard], TAM_NOME_USER, arquivo) == NULL)break;
         criador[ard][strcspn(criador[ard], "\n")] = '\0';
@@ -903,6 +905,7 @@ int buscarPalavraChave(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIO
 
     if (agentesencontrados == 0){
         printf("Nenhum Agente Encontrado\n");
+        return -1;
     }
 
 }
