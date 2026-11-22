@@ -9,7 +9,7 @@
 #define TAM_NOME 80
 #define TAM_NOME_USER 80
 #define TAM_FUNCIONALIDADE 1000
-#define TAM_PALAVRA_CHAVE 20
+#define TAM_PALAVRA_CHAVE 80
 #define TAM_SCRIPT 1000
 #define NOTA_MAX 5
 #define TAM_SENHA 80
@@ -101,7 +101,7 @@ int main(){
                     printf("Cadastro de Usuario realizado com Sucesso\n");
                 }
                 else{
-                    printf("Falhou, Cadastro não realizado\n");
+                    printf("Cadastro não realizado\n");
                 }
             }
             else{
@@ -480,6 +480,13 @@ int cadastrarUsuario(int id[], char nome[][TAM_NOME_USER], char senha[][TAM_SENH
     if (fgets(nome[i],TAM_NOME_USER,stdin) == NULL)return 0;
     nome[i][strcspn(nome[i], "\n")] = '\0';
 
+    for (int u = 0; u < i; u++){
+        if (strcmp(nome[i], nome[u]) == 0){
+            printf("Nome de usuario ja registrado, escolha outro\n");
+            return 0;
+        }
+    }
+
     printf("Insira a senha: ");
     if (fgets(senha[i],TAM_SENHA,stdin) == NULL)return 0;
     senha[i][strcspn(senha[i], "\n")] = '\0';
@@ -490,7 +497,6 @@ int cadastrarUsuario(int id[], char nome[][TAM_NOME_USER], char senha[][TAM_SENH
     }
     (*proximoIdUser)++;
 
-    limparBuffer();
     return 1;
 }
 
@@ -503,7 +509,7 @@ int salvarUsuario(int id[], char nome[][TAM_NOME_USER], char senha[][TAM_SENHA],
     for (int i = 0; i < usuariosCadastrados; i++){
         fprintf(arquivo, "%d\n", id[i]);
         fprintf(arquivo, "%s\n", nome[i]);
-        fprintf(arquivo, "%s\n\n", senha[i]);
+        fprintf(arquivo, "%s\n", senha[i]);
     }
     fclose(arquivo);
     return 1;
@@ -629,8 +635,7 @@ int carregarAgentes(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONAL
         scpt[ard][strcspn(scpt[ard], "\n")] = '\0';
 
         if (fscanf(arquivo, "%d", &nota[ard]) != 1)break;
-        int c1;
-        while ((c1 = fgetc(arquivo)) != '\n' && c1 != EOF);
+        while ((c = fgetc(arquivo)) != '\n' && c != EOF);
 
         if (fgets(criador[ard], TAM_NOME_USER, arquivo) == NULL)break;
         criador[ard][strcspn(criador[ard], "\n")] = '\0';
@@ -877,7 +882,7 @@ int buscarFuncao(int id[], char nome [][TAM_NOME], char funcao[][TAM_FUNCIONALID
 
 int buscarPalavraChave(int id[], char nome[][TAM_NOME], char funcao[][TAM_FUNCIONALIDADE], char scpt[][TAM_SCRIPT], int nota[], int maxagents, char criador[][TAM_NOME_USER], char ultimaModificacao[][TAM_NOME_USER]){
     char palavraBusca[TAM_PALAVRA_CHAVE];
-    int agentesencontrados;
+    int agentesencontrados = 0;
 
     limparBuffer();
 

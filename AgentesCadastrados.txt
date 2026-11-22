@@ -1,8 +1,72 @@
 1
+SupportBot Alpha
+Chat Bot
+Focado em atendimento ao publico
+2
+Lean
+Lean
+
+2
+CodeGuardian
+Assistente de Programação
+Engenheiro de software sênior que analisa o código e busca falhas de segurança.
+5
+Lean
+Lean
+
+3
+HelpDesk Express
+Bot de Triagem
+Bot de triagem rápida para chamados de suporte técnico de TI.
+2
+Lean
+Lean
+
+4
+FinHelper Pro
+Financias
+Auxiliar em financias e gestão de recursos
+3
+Lean
+Lean
+
+5
+RefactorMaster
+Assistente de Programação
+Especialista em refatoração de código legado em C e Java.
+5
+Lean
+Lean
+
+6
+Claude
+Assistente de Programação
+Um assistente de IA focado em ajudar a escrever e revisar textos, programar, analisar informações, pesquisar na web e muito mais.
+5
+Lean
+Lean
+
+7
+Nexus
+Chat Bot
+software focado em atendimento ao publico geral
+5
+Lean
+Lean
+
+8
+ll
+l
+l
+2
+Lean
+Lean
+
+9
 KK
 KK
 KK
 1
 Lean
-Lean
+Mael
 
